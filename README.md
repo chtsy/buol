@@ -119,7 +119,7 @@ matterport/
         ├── <image_id>_weighting<frame_id>.npz            # 3D Weighting mask: 256x256x256x1
 matterport_depth_gen/
     <scene_id>/     
-        ├── <posithion_id>_d<frame_id>.exr                # Depth image: 320x240x1
+        ├── <posithion_id>_d<frame_id>.png                # Depth image: 320x240x1
 matterport_room_mask/
     <scene_id>/   
         ├── <posithion_id>_rm<frame_id>.png               # room mask: 320x240x1
