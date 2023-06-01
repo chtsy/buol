@@ -62,12 +62,14 @@ pip install loguru
 ```
 
 ## Run
+### Demo
 Download [front3d.pth](https://drive.google.com/file/d/1DoRIc5-iMQNixTJ8EQc2h8VCb8NgEc6_/view?usp=sharing)
 and put it at `models/front3d.pth`, and run:
 ```bash
 python demo.py
 ```
 
+### Train
 Download datasets and put them in `datasets/<dataset_name>` as the following structure,
 and then set GPUS (e.g. `GPUS: (0, 1, 2, 3)`) and `MODEL.EVAL: False` in the config file,
 and train with multi-GPU:
@@ -75,6 +77,7 @@ and train with multi-GPU:
 python -m torch.distributed.launch --nproc_per_node=4 main.py --cfg configs/front.yaml
 ```
 
+### Test
 Download the model or train the model, and then set `MODEL.WEIGHTS` as the model path.
 Set `GPUS: (0,)` and `MODEL.EVAL: True` in the config file, and test with one GPU:
 ```bash
