@@ -95,7 +95,9 @@ def main():
     verts, faces = mcubes.marching_cubes_color(geometry, color, 1., truncation)
     color = verts[..., 3:]
     verts = verts[..., :3]
-    write_ply(verts, color, faces, output_file=args.image.replace('.png', '.ply'))
+    output_file = args.image.replace('.png', '.ply')
+    write_ply(verts, color, faces, output_file=output_file)
+    logger.info('success predict panoptic 3D scene at: ' + output_file)
 
 
 if __name__ == '__main__':

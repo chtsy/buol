@@ -59,6 +59,7 @@ pip install pyexr
 pip install matplotlib
 pip install plyfile
 pip install loguru
+pip install scipy
 ```
 
 ## Run

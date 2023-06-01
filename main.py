@@ -153,7 +153,7 @@ def main():
                         else:
                             log_res += '{}: {:.2f}, '.format(key, val * 100)
                     log_res = log_res[:-2]
-                    logger.info('[{:5d}/{:5d}]\t'.format(i, len(data_loader)) + log_res)
+                    logger.info('[{:5d}/{:5d}]\t'.format(i + 1, len(data_loader)) + log_res)
     else:
         for i in range(start_iter, max_iter):
             start_time = time.time()
