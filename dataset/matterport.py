@@ -59,7 +59,6 @@ class Matterport(Dataset):
 
         # 2D data
         if "depth" in self.fields:
-            # depth_path = self.dataset_root_path / scene_id / io.assemble_frame_name(image_id, "d", ".png")
             depth_path = self.dataset_root_path.parent / 'matterport_depth_gen' / scene_id / io.assemble_frame_name(image_id, "d", ".png")
 
             depth = Image.open(depth_path)
@@ -267,21 +266,10 @@ class Matterport(Dataset):
         instance_ids = []
         class_ids = []
         for pano_id in np.unique(panoptic):
-            cat_id = semantic[panoptic==pano_id][0]# seg["category_id"]
-            #### fix
+            cat_id = semantic[panoptic==pano_id][0]
             if (cat_id > num_class) or (cat_id == 0):
                 continue
             class_ids.append(cat_id)
-            # if self.ignore_crowd_in_semantic:
-            #     if not seg['iscrowd']:
-            #         semantic[panoptic == seg["id"]] = cat_id
-            # else:
-            #     semantic[panoptic == seg["id"]] = cat_id
-            # if cat_id in self.thing_list:
-            #     foreground[panoptic == seg["id"]] = 1
-            #if not seg['iscrowd']:
-                # Ignored regions are not in `segments`.
-                # Handle crowd region.
             center_weights[panoptic == pano_id] = 1
             if self.ignore_stuff_in_offset:
                 # Handle stuff region.

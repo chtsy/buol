@@ -24,6 +24,7 @@ class BUOL(nn.Module):
     def forward(self, image, data=None):
         feat2d = self.bb2d(image['color'])
         pred2d, loss2d = self.bu2d(feat2d, data)
+
         with torch.no_grad():
             if 'frustum_mask' in image:
                 frustum = image['frustum_mask']
@@ -31,8 +32,10 @@ class BUOL(nn.Module):
             else:
                 kept, mapping = self.ol.bp(self.bu2d.im_size + (256,), image['intrinsic_matrix'], None)
                 frustum = kept
+
         if data is not None:
             data = self.gen_occ2d_tg(data, kept, mapping)
+
         depth, loss_dp = self.depth(feat2d, data)
         pred2d.update(depth)
 

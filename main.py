@@ -50,10 +50,6 @@ def main():
     distributed = len(gpus) > 1
     device = torch.device('cuda:{}'.format(args.local_rank))
 
-    #### add master_addr
-    # os.environ['MASTER_ADDR'] = '127.0.0.2'
-    # os.environ['MASTER_PORT'] = '12852'
-
     if distributed:
         torch.cuda.set_device(args.local_rank)
         torch.distributed.init_process_group(
@@ -87,7 +83,7 @@ def main():
     ds = dataset(cfg.DATASET)
     if cfg.MODEL.EVAL:
         batch_sampler = torch.utils.data.sampler.BatchSampler(
-            sampler.InferenceSampler(len(ds)), cfg.TRAIN.IMS_PER_BATCH, drop_last=False)
+            sampler.InferenceSampler(len(ds)), cfg.IMS_PER_BATCH, drop_last=False)
         data_loader = torch.utils.data.DataLoader(
             ds,
             num_workers=cfg.DATALOADER.NUM_WORKERS,
@@ -95,7 +91,7 @@ def main():
         )
     else:
         batch_sampler = torch.utils.data.sampler.BatchSampler(
-            sampler.TrainingSampler(len(ds), cfg.DATALOADER.TRAIN_SHUFFLE), cfg.TRAIN.IMS_PER_BATCH, drop_last=False)
+            sampler.TrainingSampler(len(ds), cfg.DATALOADER.TRAIN_SHUFFLE), cfg.IMS_PER_BATCH, drop_last=False)
         optimizer = build_optimizer(cfg, model_dict)
         lr_scheduler = build_lr_scheduler(cfg, optimizer)
         data_loader = torch.utils.data.DataLoader(

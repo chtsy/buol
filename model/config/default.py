@@ -1,5 +1,3 @@
-import os
-
 from yacs.config import CfgNode as CN
 
 _C = CN()
@@ -99,10 +97,9 @@ _C.MODEL.MODEL2D.BOTTOM_UP.LOSS.OFFSET = CN()
 _C.MODEL.MODEL2D.BOTTOM_UP.LOSS.OFFSET.NAME = 'L1Loss'
 _C.MODEL.MODEL2D.BOTTOM_UP.LOSS.OFFSET.WEIGHT = 1.
 
-
-
-
-#### depth
+# ---------------------------------------------------------------------------- #
+# depth estimation options
+# ---------------------------------------------------------------------------- #
 _C.MODEL.MODEL2D.DEPTH = CN()
 _C.MODEL.MODEL2D.DEPTH.FEATURE_KEY = ["res5", "res4", "res3", "res2"]
 _C.MODEL.MODEL2D.DEPTH.BLOCK_CHANNELS = (2048, 1024, 512, 256, 128)
@@ -159,7 +156,7 @@ _C.MODEL.MODEL3D.BOTTOM_UP.SEMANTIC.HEAD.NUM_CLASSES = (19,)
 _C.MODEL.MODEL3D.BOTTOM_UP.SEMANTIC.HEAD.CLASS_KEY = ["semantic"]
 
 # ---------------------------------------------------------------------------- #
-# semantic segmentation options
+# instance segmentation options
 # ---------------------------------------------------------------------------- #
 _C.MODEL.MODEL3D.BOTTOM_UP.INSTANCE = CN()
 _C.MODEL.MODEL3D.BOTTOM_UP.INSTANCE.ASPP = CN()
@@ -175,10 +172,8 @@ _C.MODEL.MODEL3D.BOTTOM_UP.INSTANCE.HEAD.HEAD_CHANNELS = 32
 _C.MODEL.MODEL3D.BOTTOM_UP.INSTANCE.HEAD.NUM_CLASSES = (1, 2)
 _C.MODEL.MODEL3D.BOTTOM_UP.INSTANCE.HEAD.CLASS_KEY = ["center", "offset"]
 
-
-
 # ---------------------------------------------------------------------------- #
-# semantic segmentation options
+# geometry options
 # ---------------------------------------------------------------------------- #
 _C.MODEL.MODEL3D.BOTTOM_UP.GEOMETRY = CN()
 _C.MODEL.MODEL3D.BOTTOM_UP.GEOMETRY.ASPP = CN()
@@ -194,7 +189,9 @@ _C.MODEL.MODEL3D.BOTTOM_UP.GEOMETRY.HEAD.HEAD_CHANNELS = 32
 _C.MODEL.MODEL3D.BOTTOM_UP.GEOMETRY.HEAD.NUM_CLASSES = (1, 2)
 _C.MODEL.MODEL3D.BOTTOM_UP.GEOMETRY.HEAD.CLASS_KEY = ["center", "offset"]
 
-
+# ---------------------------------------------------------------------------- #
+# 3d loss options
+# ---------------------------------------------------------------------------- #
 _C.MODEL.MODEL3D.BOTTOM_UP.LOSS = CN()
 _C.MODEL.MODEL3D.BOTTOM_UP.LOSS.SEMANTIC = CN()
 _C.MODEL.MODEL3D.BOTTOM_UP.LOSS.SEMANTIC.NAME = 'CrossEntropyLoss'
@@ -222,9 +219,7 @@ _C.MODEL.MODEL3D.BOTTOM_UP.LOSS.GEOMETRY.WEIGHT = 1.
 # DATASET
 # -----------------------------------------------------------------------------
 _C.DATASET = CN()
-####### add front3d
 _C.DATASET.FILE_LIST = "resources/front3d/train_list_3d.txt"
-##_C.DATASET.ROOT
 _C.DATASET.FIELDS = ("color", "depth", "instance2d", "geometry", "instance3d", "semantic3d")
 _C.DATASET.ROOT = "datasets/front3d/"
 _C.DATASET.DATASET = "front3d"
@@ -298,10 +293,10 @@ _C.SOLVER.CLIP_GRADIENTS.NORM_TYPE = 2.0
 # -----------------------------------------------------------------------------
 _C.TRAIN = CN()
 
-_C.TRAIN.IMS_PER_BATCH = 32
 _C.TRAIN.MAX_ITER = 90000
 _C.TRAIN.RESUME = False
 
+_C.IMS_PER_BATCH = 1
 # -----------------------------------------------------------------------------
 # DATALOADER
 # -----------------------------------------------------------------------------
@@ -313,39 +308,7 @@ _C.DATALOADER.TRAIN_SHUFFLE = True
 _C.DATALOADER.NUM_WORKERS = 4
 
 # -----------------------------------------------------------------------------
-# TEST
-# -----------------------------------------------------------------------------
-_C.TEST = CN()
-
-_C.TEST.GPUS = (0, )
-_C.TEST.CROP_SIZE = (1025, 2049)
-
-_C.TEST.SEMANTIC_FOLDER = 'semantic'
-_C.TEST.INSTANCE_FOLDER = 'instance'
-_C.TEST.PANOPTIC_FOLDER = 'panoptic'
-_C.TEST.FOREGROUND_FOLDER = 'foreground'
-
-_C.TEST.EVAL_INSTANCE = False
-_C.TEST.EVAL_PANOPTIC = False
-_C.TEST.EVAL_FOREGROUND = False
-
-_C.TEST.MODEL_FILE = ''
-_C.TEST.TEST_TIME_AUGMENTATION = False
-_C.TEST.FLIP_TEST = False
-_C.TEST.SCALE_LIST = [1]
-
-_C.TEST.DEBUG = False
-
-_C.TEST.ORACLE_SEMANTIC = False
-_C.TEST.ORACLE_FOREGROUND = False
-_C.TEST.ORACLE_CENTER = False
-_C.TEST.ORACLE_OFFSET = False
-
-_C.TEST.INSTANCE_SCORE_TYPE = "semantic"
-
-# -----------------------------------------------------------------------------
 # POST PROCESSING
-# Panoptic post-processing params
 # -----------------------------------------------------------------------------
 _C.MODEL.POST_PROCESSING = CN()
 _C.MODEL.POST_PROCESSING.CENTER_THRESHOLD = 0.1
@@ -369,17 +332,8 @@ _C.MODEL.PROJECTION.IMAGE_SIZE = (160, 120)
 _C.MODEL.PROJECTION.TRUNCATION = 3.0
 
 
-# _C.MODEL.FRUSTUM3D.CLASS_WEIGHTS = [0.001, 5.012206425, 3.67783818, 4.255409701, 4.810809432, 4.542602089,
-#                                     6.743836113, 4.789477957, 10.28815007, 5.401373831, 1.7803661289, 1.257145849,
-#                                     8.397596223] ## need fix
-
-## eval
 _C.MODEL.EVAL = False
-## stage
-## freeze
 _C.MODEL.FREEZE2D = False
-
-
 
 
 def update_config(cfg, args):
@@ -387,7 +341,6 @@ def update_config(cfg, args):
 
     cfg.merge_from_file(args.cfg)
     cfg.merge_from_list(args.opts)
-    # cfg.DATALOADER.TRAIN_SHUFFLE = cfg.DATALOADER.TRAIN_SHUFFLE and not cfg.MODEL.EVAL
     if cfg.MODEL.EVAL:
         cfg.DATASET.FIELDS = cfg.DATASET.FIELDS + ("panoptic", )
 

@@ -1,14 +1,12 @@
 # ------------------------------------------------------------------------------
 # Common modules.
 # Written by Bowen Cheng (bcheng9@illinois.edu)
+# Modified by Tao Chu
 # ------------------------------------------------------------------------------
 
-from functools import partial
-
-import torch
-from torch import nn
-from torch.nn import functional as F
 import MinkowskiEngine as Me
+from functools import partial
+from torch import nn
 
 
 def basic_conv(in_planes, out_planes, kernel_size, stride=1, padding=1, groups=1,
@@ -63,12 +61,3 @@ def stacked_conv(in_planes, out_planes, kernel_size, num_stack, stride=1, paddin
     for n in range(1, num_stack):
         module.append(conv(in_planes=out_planes))
     return nn.Sequential(*module)
-
-
-if __name__ == '__main__':
-    import torch
-
-    model = stacked_conv(4, 2, 3, 3)
-    print(model)
-    data = torch.zeros(1, 4, 5, 5)
-    print(model.forward(data).shape)

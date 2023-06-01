@@ -383,17 +383,6 @@ class Front3D(Dataset):
             except:
                 print(instance_ids, 'not in', instance.unique())
                 continue
-            # if self.ignore_crowd_in_semantic:
-            #     if not seg['iscrowd']:
-            #         semantic[panoptic == seg["id"]] = cat_id
-            # else:
-            #     semantic[panoptic == seg["id"]] = cat_id
-            # if cat_id in self.thing_list:
-            #     foreground[panoptic == seg["id"]] = 1
-            #if not seg['iscrowd']:
-                # Ignored regions are not in `segments`.
-                # Handle crowd region.
-
             center_weights[instance == pano_id] = 1
             if self.ignore_stuff_in_offset:
                 # Handle stuff region.
@@ -450,7 +439,6 @@ class Front3D(Dataset):
             offset3d=torch.as_tensor(offset.astype(np.float32)),
             center3d=torch.as_tensor(center.astype(np.float32))
         )
-
 
     def compute_frustum_padding(self, intrinsic_inverse: torch.Tensor) -> torch.Tensor:
         depth_size = self.depth_image_size
