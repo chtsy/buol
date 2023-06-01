@@ -4,7 +4,7 @@
 This is an official release of the paper **BUOL: A Bottom-Up Framework with Occupancy-aware Lifting
 for Panoptic 3D Scene Reconstruction From A Single Image**
 
-> BUOL: A Bottom-Up Framework with Occupancy-aware Lifting for Panoptic 3D Scene Reconstruction From A Single Image    
+> [BUOL: A Bottom-Up Framework with Occupancy-aware Lifting for Panoptic 3D Scene Reconstruction From A Single Image](https://openaccess.thecvf.com/content/CVPR2023/papers/Chu_BUOL_A_Bottom-Up_Framework_With_Occupancy-Aware_Lifting_for_Panoptic_3D_CVPR_2023_paper.pdf)    
 > Tao Chu, [Pan Zhang](https://panzhang0212.github.io/), Qiong Liu, [Jiaqi Wang](https://myownskyw7.github.io/)      
 > The IEEE / CVF Computer Vision and Pattern Recognition Conference (CVPR 2023)
 
